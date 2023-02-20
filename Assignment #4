@@ -1,0 +1,32 @@
+#1
+cd /cygdrive/c/Users/Tapel/OneDrive/Desktop/MysteryFolder
+makeblastdb -in mystery_transcripts.fasta -dbtype nucl -out mystery_transcripts_db
+
+#2
+makeblastdb -in mystery_proteins.fasta -dbtype prot -out mystery_proteins_db
+
+#3
+blastn -query mystery_nucleotide_query.fasta -subject mystery_transcripts.fasta -evalue 0.001 -max_target_seqs 5 -outfmt 6 -out mystery_nucleotide_query_blast_results.txt
+
+#4
+sort -k12,12g mystery_nucleotide_query_blast_results.txt | head -n 1
+
+#5
+awk '$3 >= 90 {print $1 > "most_similar.txt"}' mystery_nucleotide_query_blast_results.txt
+
+#6
+cat mystery_protein_query.fasta mystery_proteins.fasta > selected_proteins.fasta
+blastp -query mystery_protein_query.fasta -subject mystery_proteins.fasta -evalue 100000 -outfmt 6 -out blast_results.txt
+head -n 15 blast_results.txt > top_hits.txt
+
+#7
+sort -k11,11g blast_results.txt | head -n 1
+
+#8
+#Coffea arabica
+
+#9
+#Gardenia jasminoides
+
+#10
+#Putative Catalase gene
