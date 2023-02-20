@@ -1,0 +1,37 @@
+cd /cygdrive/c/Users/Tapel/OneDrive/Desktop/pandas
+sed '/zoo/d;/Zoo/d' Pandas.txt > Zooless_Pandas.txt
+
+awk '{print $1 , $4 , $2}' Pandas.txt > Sorted_Pandas.txt
+
+awk '{print $5}' Pandas.txt | sort > Alphabetical_Pandas.txt
+
+awk '{ gsub("female", "F", $0); gsub("male", "M", $0); print }' Pandas.txt > Gender_Pandas
+
+awk '$2 == "female" && $3 == "October" { count++ } END { print "Number of lines: " count }' Pandas.txt
+
+input_file="Pandas.txt"
+output_file="numbered_$input_file"
+grep -n '' $input_file | awk -F: '{print $1 "\t" $2}' > $output_file
+
+input_file="Pandas.txt"
+output_file="selected_lines_$input_file"
+sed -n '1p;6p;17p' $input_file > $output_file
+
+input_file="Pandas.txt"
+output_file="lines_with_x_$input_file"
+grep -E '[xX]' $input_file > $output_file 
+
+input_file="Pandas.txt"
+output_file="unique_fifth_column_rows_$input_file"
+cp $input_file $output_file
+awk '{print $5}' $output_file | sort | uniq -d > fifth_column_duplicates.txt
+declare -a duplicates=($(cat fifth_column_duplicates.txt))
+for duplicate in "${duplicates[@]}"; do
+sed -i "/$duplicate/d" $output_file
+done
+
+input_file="Pandas.txt"
+output_file="birthday_$input_file"
+awk '{print $1, $4}' $input_file > $output_file
+sort -k2n $output_file > sorted_$output_file
+mv sorted_$output_file $output_file
